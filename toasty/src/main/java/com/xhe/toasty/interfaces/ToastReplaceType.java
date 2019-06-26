@@ -1,6 +1,6 @@
 package com.xhe.toasty.interfaces;
 
-import android.support.annotation.IntDef;
+import androidx.annotation.IntDef;
 
 import com.xhe.toasty.Toasty;
 
@@ -13,5 +13,5 @@ import java.lang.annotation.RetentionPolicy;
 
 @IntDef({Toasty.DISCARD, Toasty.REPLACE_NOW, Toasty.REPLACE_BEHIND})
 @Retention(RetentionPolicy.SOURCE)
-public @interface ToastRepalceType {
+public @interface ToastReplaceType {
 }

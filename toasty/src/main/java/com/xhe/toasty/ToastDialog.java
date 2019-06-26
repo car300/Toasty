@@ -2,9 +2,10 @@ package com.xhe.toasty;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.view.Window;
 import android.view.WindowManager;
+
+import androidx.annotation.NonNull;
 
 import com.xhe.toasty.interfaces.ToastInterface;
 

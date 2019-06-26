@@ -1,12 +1,15 @@
 package com.xhe.toasty;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Looper;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.widget.Toast;
 
 import com.xhe.toasty.interfaces.ToastInterface;
 
@@ -99,18 +102,26 @@ public class Toasty {
      *                弱引用持有
      * @return
      */
+    @SuppressLint("ShowToast")
     public static ToastyBuilder with(Context context) {
-        if (!(context instanceof Activity)) {
-            throw new RuntimeException("$ context must be activity");
-        }
         if (!isOnMainThread()) {
             throw new RuntimeException("$ toasty must be builder in MainThread");
         }
         if (toastFactory == null) {
             toastFactory = createDefaultToastFactory();
         }
+        ToastyBuilder builder = new ToastyBuilder(context.getClass().getSimpleName());
+        if (!(context instanceof Activity)) {
+            builder.setNativeToast(Toast.makeText(context, "", Toast.LENGTH_SHORT));
+            boolean areNotificationsEnabled = ExKt.areNotificationsEnabled(context);
+            if (!areNotificationsEnabled) {
+                Log.w("Toasty", "缺少通知权限");
+            }
+            return builder;
+        }
         handler = ToastHandler.getInstance((Activity) context);
-        return new ToastyBuilder(handler, context.getClass().getSimpleName());
+        builder.setToastHandler(handler);
+        return builder;
     }
 
     /**

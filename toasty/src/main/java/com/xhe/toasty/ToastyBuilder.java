@@ -1,11 +1,13 @@
 package com.xhe.toasty;
 
-import android.support.annotation.NonNull;
 import android.view.Gravity;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import com.xhe.toasty.interfaces.ToastDuration;
 import com.xhe.toasty.interfaces.ToastGravity;
-import com.xhe.toasty.interfaces.ToastRepalceType;
+import com.xhe.toasty.interfaces.ToastReplaceType;
 
 /**
  * Created by hexiang on 2018/2/6.
@@ -29,10 +31,18 @@ final public class ToastyBuilder {
     private int replaceType = Toasty.DISCARD;
 
     ToastHandler toastHandler;
+    private Toast nativeToast = null;
 
-    protected ToastyBuilder(ToastHandler toastHandler, String activityName) {
-        this.toastHandler = toastHandler;
+    protected void setNativeToast(Toast nativeToast) {
+        this.nativeToast = nativeToast;
+    }
+
+    protected ToastyBuilder(String activityName) {
         this.activityName = activityName;
+    }
+
+    public void setToastHandler(ToastHandler toastHandler) {
+        this.toastHandler = toastHandler;
     }
 
     /**
@@ -75,7 +85,7 @@ final public class ToastyBuilder {
      * @param replaceType
      * @see com.xhe.toasty.Toasty#DISCARD
      */
-    public ToastyBuilder replaceType(@ToastRepalceType int replaceType) {
+    public ToastyBuilder replaceType(@ToastReplaceType int replaceType) {
         this.replaceType = replaceType;
         return this;
     }
@@ -102,7 +112,16 @@ final public class ToastyBuilder {
 
 
     public void show() {
-        toastHandler.show(this);
+        if (nativeToast == null) {
+            toastHandler.show(this);
+            return;
+        }
+        nativeToast.setText(this.msg);
+        nativeToast.setGravity(gravity, 0, Toasty.dip(nativeToast.getView().getContext(), Toasty.offsetYDip));
+        if (duration == Toasty.LENGTH_LONG) {
+            nativeToast.setDuration(Toast.LENGTH_LONG);
+        }
+        nativeToast.show();
     }
 
 }
