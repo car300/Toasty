@@ -30,7 +30,7 @@ publish {
     userOrg = 'adrianzuo'//bintray.com用户名
     groupId = 'com.hexiang'//jcenter上的路径
     artifactId = 'toasty'//项目名称
-    publishVersion = '1.1.1'//版本号
+    publishVersion = '1.1.2'//版本号
     desc = 'custom toast'//描述，不重要
     website = 'https://github.com/car300/Toasty'
 }
